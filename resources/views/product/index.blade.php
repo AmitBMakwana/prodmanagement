@@ -8,7 +8,7 @@
         {{ session('status') }}
     </div>
 @endif
-
+<a href="{{ route('products.create') }}">Create</a>
 <form method="GET" action="{{ route('products.index') }}">
     <div>
         <label for="search">Search:</label>
@@ -25,7 +25,6 @@
             <th>Price</th>
             <th>Quantity</th>
             <th>Status</th>
-            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -35,33 +34,23 @@
                 <td>{{ $product->description }}</td>
                 <td>{{ $product->price }}</td>
                 <td>{{ $product->quantity }}</td>
-                <td>{{ $product->category->name }}</td>
                 <td>
                     <input type="checkbox" class="status-checkbox" data-product-id="{{ $product->id }}"
-                        {{ $product->is_active ? 'checked' : '' }}>
-                </td>
-                <td>
-                    <a href="{{ route('products.show', $product->id) }}">View</a>
-                    <a href="{{ route('products.edit', $product->id) }}">Edit</a>
-                    <form method="POST"
-                        action="{{ route('products.destroy', $product->id) }}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit"
-                            onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
-                    </form>
+                        {{ $product->is_active =="1" ? 'checked' : '' }}>
                 </td>
             </tr>
+            {{ $products->links() }}
+
         @endforeach
     </tbody>
 </table>
 
 <div>
-    {{ $products->appends(['search' => old('search')])->links() }}
 </div>
 @endsection
 
 @section('scripts')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
         $('body').on('change', '.status-checkbox', function () {

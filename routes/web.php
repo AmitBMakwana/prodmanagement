@@ -19,4 +19,4 @@ Route::get('/', function () {
 });
 
 Route::resource('products',ProductController::class);
-Route::post('/products/change-status', 'ProductController@changeStatus')->name('products.changeStatus');
+Route::post('/products/change-status', [ProductController::class,'changeStatus'])->name('products.changeStatus');

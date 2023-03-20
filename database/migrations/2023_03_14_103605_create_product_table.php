@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('price',8,2);
             $table->integer('quantity');
             $table->unsignedBigInteger('category_id');
+            $table->enum('is_active',['1','0']);
             $table->timestamps();
 
             $table->foreign('category_id')->references('id');

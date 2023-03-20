@@ -11,9 +11,17 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $products = Product::all();
+        $products = Product::paginate(10);
+        $search = $request->input('search');
+
+        if($search!=''){
+            $products = Product::where('name', 'like', '%'.$search.'%')
+                           ->orWhere('description', 'like', '%'.$search.'%')
+                           ->paginate(10);
+        }
         return view("product.index",compact('products'));
     }
 
@@ -56,6 +64,7 @@ class ProductController extends Controller
             'price' => $request->price,
             'quantity' => $request->quantity,
             'category_id' => $request->category_id,
+            'is_active' => 1,
         ]);
 
         $product->save();
